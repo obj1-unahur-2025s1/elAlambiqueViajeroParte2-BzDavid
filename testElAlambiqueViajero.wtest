@@ -16,15 +16,15 @@ test "luke viaja a bs as"{
 }
 
 test "luke viaja a bagdad con un recuerdo diferente"{
-    bagdad.recuerdo("Armas Masivas")
+    bagdad.cambiarRecuerdoPor_("Armas Masivas")
     luke.viajar(bagdad)
     assert.equals("Armas Masivas", luke.recuerdo())
 }
 
 test "luke viaja a bagdad"{
-    bagdad.recuerdo("Armas Masivas")
+    bagdad.cambiarRecuerdoPor_("Bidon de petroleo")
     luke.viajar(bagdad)
-    assert.equals("Armas Masivas", luke.recuerdo())
+    assert.equals("Bidon de petroleo", luke.recuerdo())
 }
 test "luke viaja a las vegas cuando hace homenaje a bs as"{
     lasVegas.homenaje(buenosAires)
@@ -56,7 +56,7 @@ test "luke viaja 2 veces, quiere viajar a Paris y no puede"{
 
 test "luke viaja a hurlingham en el convertible convertido en chatarra" {
   luke.vehiculo(convertible)
-  convertible.convertir(chatarra)
+  convertible.convertir()
   luke.viajar(hurlingham)
   assert.equals("sticker de la Unahur",luke.recuerdo())
   assert.equals(5,chatarra.cañones())
