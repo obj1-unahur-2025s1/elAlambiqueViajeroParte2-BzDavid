@@ -32,7 +32,8 @@ object centroDeInscripcion {
     }
 
     method ganadorDeLaCarrera() {
-        inscriptos.max({auto => auto.velocidad()})
+        self.irALaCarrera()
+        return inscriptos.max({auto => auto.velocidad()})
     }
 
     method listaDelResultadoDeLaCarrera() = inscriptos.sortedBy({primerAuto, segundoAuto => primerAuto.velocidad() > segundoAuto.velocidad()})

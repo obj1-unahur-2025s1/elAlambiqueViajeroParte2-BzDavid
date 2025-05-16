@@ -1,64 +1,155 @@
 import elAlambiqueViajero.*
-test "luke cuenta cuando va de viaje"{
-    luke.viajar(paris)
-    assert.equals(1, luke.cantidadViajes())
-}
+import centroInscripcion.*
+describe "Tests de la primera parte" {
+    test "Luke cuenta cuando va de viaje" {
+        luke.viajar(paris)
+        assert.equals(1, luke.cantidadViajes())
+    }
 
-test "luke viaja a paris"{
-    luke.viajar(paris)
-    assert.equals("Llavero Torre Eiffel", luke.recuerdo())
-}
-
-
-test "luke viaja a bs as"{
-    luke.viajar(buenosAires)
-    assert.equals("Mate", luke.recuerdo())
-}
-
-test "luke viaja a bagdad con un recuerdo diferente"{
-    bagdad.cambiarRecuerdoPor_("Armas Masivas")
-    luke.viajar(bagdad)
-    assert.equals("Armas Masivas", luke.recuerdo())
-}
-
-test "luke viaja a bagdad"{
-    bagdad.cambiarRecuerdoPor_("Bidon de petroleo")
-    luke.viajar(bagdad)
-    assert.equals("Bidon de petroleo", luke.recuerdo())
-}
-test "luke viaja a las vegas cuando hace homenaje a bs as"{
-    lasVegas.homenaje(buenosAires)
-    luke.viajar(lasVegas)
-    assert.equals("Mate", luke.recuerdo())
-}
-test "luke viaja a las vegas cuando hace homenaje a paris"{
-    lasVegas.homenaje(paris)
-    luke.viajar(lasVegas)
-    assert.equals("Llavero Torre Eiffel", luke.recuerdo())
-}
+    test "Luke viaja a paris" {
+        luke.viajar(paris)
+        assert.equals("Llavero Torre Eiffel", luke.recuerdo())
+    }
 
 
-test "luke viaja a paris y le qeuda combustibles para seguir viajando"{
-    luke.viajar(paris)
-    assert.that(alambiqueVeloz.puedeFuncionar())
-}
-test "luke viaja 2 veces a paris y ya no le queda combustibles para seguir viajando"{
-    luke.viajar(paris)
-    luke.viajar(paris)
-    assert.notThat(alambiqueVeloz.puedeFuncionar())
-}
-test "luke viaja 2 veces, quiere viajar a Paris y no puede"{
-    luke.viajar(buenosAires)
-    luke.viajar(buenosAires)
-    luke.viajar(paris)
-    assert.notEquals("Llavero Torre Eiffel",luke.recuerdo())
+    test "Luke viaja a bs as" {
+        luke.viajar(buenosAires)
+        assert.equals("Mate con yerba", luke.recuerdo())
+    }
+
+    test "Luke viaja a bagdad con un recuerdo diferente" {
+        bagdad.cambiarRecuerdoPor_("Armas Masivas")
+        luke.viajar(bagdad)
+        assert.equals("Armas Masivas", luke.recuerdo())
+    }
+
+    test "Luke viaja a bagdad" {
+        bagdad.cambiarRecuerdoPor_("Bidon de petroleo")
+        luke.viajar(bagdad)
+        assert.equals("Bidon de petroleo", luke.recuerdo())
+    }
+    test "Luke viaja a las vegas cuando hace homenaje a bs as" {
+        lasVegas.homenaje(buenosAires)
+        luke.viajar(lasVegas)
+        assert.equals("Mate con yerba", luke.recuerdo())
+    }
+    test "Luke viaja a las vegas cuando hace homenaje a paris" {
+        lasVegas.homenaje(paris)
+        luke.viajar(lasVegas)
+        assert.equals("Llavero Torre Eiffel", luke.recuerdo())
+    }
+
+    test "Luke viaja a paris y le qeuda combustibles para seguir viajando" {
+        luke.viajar(paris)
+        assert.that(alambiqueVeloz.puedeFuncionar())
+    }
+
+    test "Luke viaja 2 veces a paris y ya no le queda combustibles para seguir viajando" {
+        luke.viajar(paris)
+        luke.viajar(paris)
+        assert.notThat(alambiqueVeloz.puedeFuncionar())
+    }
+    test "Luke viaja 2 veces, quiere viajar a Paris y no puede" {
+        luke.viajar(buenosAires)
+        luke.viajar(buenosAires)
+        luke.viajar(paris)
+        assert.notEquals("Llavero Torre Eiffel",luke.recuerdo())
+    }
+
+    test "Luke viaja a hurlingham en el convertible convertido en chatarra" {
+        luke.vehiculo(convertible)
+        convertible.convertirAlVehiculo_(chatarra)
+        luke.viajar(hurlingham)
+        assert.equals("Sticker de la UNaHur", luke.recuerdo())
+        assert.equals(5, chatarra.cañones())
+    }
 }
 
-test "luke viaja a hurlingham en el convertible convertido en chatarra" {
-  luke.vehiculo(convertible)
-  convertible.convertir()
-  luke.viajar(hurlingham)
-  assert.equals("sticker de la Unahur",luke.recuerdo())
-  assert.equals(5,chatarra.cañones())
+describe "Tests de la segunda parte" {
+  test "Los vehículos que quieran participar de la carrera deben inscribirse en el centro de inscripción." {
+        testObject.inscribirTodosLosAutos()
+        assert.notThat(centroDeInscripcion.inscriptos().isEmpty())
+    }
 
-  }
+  test "Si no puede no lo inscribe pero lo deja en una lista de rechazados." {
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(hurlingham)
+        testObject.inscribirTodosLosAutos()
+        assert.notThat(centroDeInscripcion.rechazados().isEmpty())
+    }
+
+  test "Hay ciudades como Bs.As. (la ciudad inicial) en las que todos los vehículos pueden entrar." {
+        testObject.inscribirTodosLosAutos()
+        assert.equals(centroDeInscripcion.inscriptos().size(), 6)
+    }
+
+  test "Cambia la ciudad donde acontecerá la carrera una vez que se incribieron todos los autos y se reevaluan los inscriptos y rechazados." {
+        testObject.inscribirTodosLosAutos()
+        assert.equals(centroDeInscripcion.inscriptos().size(), 6)
+        assert.that(centroDeInscripcion.rechazados().isEmpty())
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(hurlingham)
+        assert.notEquals(centroDeInscripcion.inscriptos().size(), 6)
+        assert.notThat(centroDeInscripcion.rechazados().isEmpty())
+    }
+
+   test "Cuando llega el momento oportuno, se le avisa a todos los vehículos anotados que vayan a la ciudad, lo cual implica que todos sufran las consecuencias del viaje" {
+        testObject.inscribirTodosLosAutos()
+        assert.that(antigualla.rapido())
+        centroDeInscripcion.irALaCarrera()
+        assert.notThat(antigualla.rapido()) //Deja de ser rápido ya que sufrió las consecuencias del viaje.
+    }
+
+    test "Se decide al ganador de la carrera en Buenos Aires" {
+        testObject.inscribirTodosLosAutos()
+        console.println(centroDeInscripcion.ganadorDeLaCarrera())
+        assert.equals(centroDeInscripcion.ganadorDeLaCarrera(), alambiqueVeloz)
+    }
+
+    test "Se decide al ganador de la carrera en Paris" {
+        testObject.inscribirTodosLosAutos()
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(paris)
+        console.println(centroDeInscripcion.ganadorDeLaCarrera())
+        assert.equals(centroDeInscripcion.ganadorDeLaCarrera(), alambiqueVeloz)
+    }
+
+    test "Se decide al ganador de la carrera en Bagdad" {
+        testObject.inscribirTodosLosAutos()
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(bagdad)
+        console.println(centroDeInscripcion.ganadorDeLaCarrera())
+        assert.equals(centroDeInscripcion.ganadorDeLaCarrera(), alambiqueVeloz)
+    }
+
+    test "Se decide al ganador de la carrera en Hurlingham" {
+        testObject.inscribirTodosLosAutos()
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(hurlingham)
+        console.println(centroDeInscripcion.ganadorDeLaCarrera())
+        assert.equals(centroDeInscripcion.ganadorDeLaCarrera(), alambiqueVeloz)
+    }
+
+    test "Se decide al ganador de la carrera en Las Vegas" {
+        testObject.inscribirTodosLosAutos()
+        centroDeInscripcion.cambiarCiudadDeLaCarrera(lasVegas)
+        console.println(centroDeInscripcion.ganadorDeLaCarrera())
+        assert.equals(centroDeInscripcion.ganadorDeLaCarrera(), alambiqueVeloz)
+    }
+
+    test "Se van algunos gangsters y por su funcionamiento, la velocidad de la antigualla cambia" {
+        assert.equals(antigualla.velocidad(), 40)
+        3.times({i => antigualla.desgaste()})
+        assert.notEquals(antigualla.velocidad(), 40)
+    }
+
+    // test "description" {
+    //     testObject.inscribirTodosLosAutos()
+    // }
+}
+
+object testObject {
+    method inscribirTodosLosAutos() {
+        centroDeInscripcion.inscribirAuto_(antigualla)
+        centroDeInscripcion.inscribirAuto_(alambiqueVeloz)
+        centroDeInscripcion.inscribirAuto_(chatarra)
+        centroDeInscripcion.inscribirAuto_(moto)
+        centroDeInscripcion.inscribirAuto_(convertible)
+        centroDeInscripcion.inscribirAuto_(superPerrari)
+    }
+}

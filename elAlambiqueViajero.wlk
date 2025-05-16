@@ -162,6 +162,10 @@ object convertible {
         convertido = listaDeVehiculosPosibles.anyOne()
     }
 
+    method convertirAlVehiculo_(unVehiculo) {
+        convertido = unVehiculo
+    }
+
     method convertirAlSiguiente() {
         convertido = listaDeVehiculosPosibles.get(numeroDeVehiculoSiguiente)
         numeroDeVehiculoSiguiente = if (numeroDeVehiculoSiguiente == listaDeVehiculosPosibles.size() - 1) 0 else numeroDeVehiculoSiguiente + 1
@@ -234,12 +238,7 @@ object combustibleUltimate {
 
 /*
 
-centroDeInscripcion.inscribirAuto_(antigualla)
-centroDeInscripcion.inscribirAuto_(alambiqueVeloz)
-centroDeInscripcion.inscribirAuto_(chatarra)
-centroDeInscripcion.inscribirAuto_(moto)
-centroDeInscripcion.inscribirAuto_(convertible)
-centroDeInscripcion.inscribirAuto_(superPerrari)
+
 
 */
   
